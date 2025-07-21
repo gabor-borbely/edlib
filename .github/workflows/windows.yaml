@@ -32,5 +32,6 @@ jobs:
           cmake .
           cmake --build . --config Release
       - name: Test
+        run: |
           file bin\Release\runTests.exe
           bin\Release\runTests.exe
