@@ -82,7 +82,7 @@ jobs:
           EDLIB_OMIT_README_RST: 1-
         run: |
           cd bindings/python
-          robocopy ..\..\edlib . /E
+          robocopy ..\..\edlib edlib /E
           python -m pip install -e .
           cython --cplus edlib.pyx -o edlib.bycython.cpp
           cog -d -o README.rst README-tmpl.rst
