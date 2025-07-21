@@ -61,25 +61,18 @@ jobs:
 
   python:
     name: "python bindings"
-    strategy:
-      matrix:
-        python:
-          - "3.12"
-          - "3.11"
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
       - uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 17
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "${{ matrix.python }} "
       - name: install dependencies
         run: python -m pip install cython build cibuildwheel cogapp
       - name: Build
         env:
-          EDLIB_OMIT_README_RST: 1-
+          EDLIB_OMIT_README_RST: 1
+          CIBW_TEST_COMMAND: "python3 {project}/test.py"
         run: |
           cd bindings/python
           robocopy ..\..\edlib edlib /E
