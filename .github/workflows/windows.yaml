@@ -73,7 +73,7 @@ jobs:
       - name: Build
         env:
           EDLIB_OMIT_README_RST: 1
-          CIBW_TEST_COMMAND: "python3 {project}/test.py"
+          CIBW_TEST_COMMAND: "python {project}/test.py"
         run: |
           cd bindings/python
           robocopy ..\..\edlib edlib /E
