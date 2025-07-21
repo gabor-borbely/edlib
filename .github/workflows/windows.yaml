@@ -22,18 +22,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Install Python packages
-        run: |
-          python -m pip install --upgrade pip setuptools meson ninja
-
       - name: Set C/CPP compiler to use
-        shell: cmd
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 17
+          msbuild-architecture: ${{ matrix.arch }}
+      - name: Build
         run: |
-          "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" ${{ matrix.arch }}
           cmake .
           cmake --build . --config Release
+      - name: Test
+          file bin\Release\runTests.exe
+          bin\Release\runTests.exe
