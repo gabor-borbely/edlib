@@ -65,7 +65,7 @@ jobs:
       matrix:
         python:
           - "3.12"
-          - "3.10"
+          - "3.11"
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
@@ -76,11 +76,12 @@ jobs:
         with:
           python-version: "${{ matrix.python }} "
       - name: install dependencies
-        run: python -m pip install cython build cibuildwheel
+        run: python -m pip install cython build cibuildwheel cogapp
       - name: Build
         run: |
           cd bindings/python
           robocopy ..\..\edlib . /E
           cython --cplus edlib.pyx -o edlib.bycython.cpp
+          cog -d -o README.rst README-tmpl.rst
           python -m build --sdist
           python -m cibuildwheel --output-dir wheelhouse
