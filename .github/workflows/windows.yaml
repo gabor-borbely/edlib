@@ -64,8 +64,8 @@ jobs:
     strategy:
       matrix:
         python:
-          - 3.12
-          - 3.10
+          - "3.12"
+          - "3.10"
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
