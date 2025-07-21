@@ -34,7 +34,7 @@ jobs:
           bin\Release\runTests.exe
 
   mason_build:
-    name: "mason build"
+    name: "meson build"
     strategy:
       matrix:
         linking:
@@ -50,7 +50,7 @@ jobs:
         with:
           python-version: "3.x"
       - name: install dependencies
-        run: python -m pip install ninja mason
+        run: python -m pip install ninja meson
       - name: Build
         run: |
           meson setup --backend=ninja -Ddefault_library=${{ matrix.linking }} meson-build-${{ matrix.linking }} .
