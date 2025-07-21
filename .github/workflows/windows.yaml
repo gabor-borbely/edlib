@@ -65,6 +65,9 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 17
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
       - name: install dependencies
         run: python -m pip install cython build cibuildwheel cogapp
       - name: Build
