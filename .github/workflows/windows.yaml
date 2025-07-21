@@ -46,12 +46,15 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 17
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: install dependencies
+        run: python -m pip install ninja mason
       - name: Build
         run: |
-          SPECIFIER=meson-build-${{ matrix.linking }}
-          meson setup --backend=ninja -Ddefault_library=${{ matrix.linking }} $SPECIFIER .
-          meson compile -v -C $SPECIFIER
+          meson setup --backend=ninja -Ddefault_library=${{ matrix.linking }} meson-build-${{ matrix.linking }} .
+          meson compile -v -C meson-build-${{ matrix.linking }}
       - name: Test
         run: |
-          SPECIFIER=meson-build-${{ matrix.linking }}
-          meson test -C $SPECIFIER
+          meson test -C meson-build-${{ matrix.linking }}
