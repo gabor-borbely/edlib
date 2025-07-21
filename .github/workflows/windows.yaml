@@ -11,8 +11,8 @@ on:
       - master
 
 jobs:
-  cpp_edlib:
-    name: "Check that CPP edlib correctly builds and passes tests."
+  cmake_build:
+    name: "CMake build"
     strategy:
       matrix:
         arch:
@@ -20,10 +20,8 @@ jobs:
           - x86
     runs-on: windows-2022
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set C/CPP compiler to use
-        uses: microsoft/setup-msbuild@v2
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 17
           msbuild-architecture: ${{ matrix.arch }}
@@ -33,5 +31,27 @@ jobs:
           cmake --build . --config Release
       - name: Test
         run: |
-          file bin\Release\runTests.exe
           bin\Release\runTests.exe
+
+  mason_build:
+    name: "mason build"
+    strategy:
+      matrix:
+        linking:
+          - static
+          - shared
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 17
+      - name: Build
+        run: |
+          SPECIFIER=meson-build-${{ matrix.linking }}
+          meson setup --backend=ninja -Ddefault_library=${{ matrix.linking }} $SPECIFIER .
+          meson compile -v -C $SPECIFIER
+      - name: Test
+        run: |
+          SPECIFIER=meson-build-${{ matrix.linking }}
+          meson test -C $SPECIFIER
